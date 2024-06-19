@@ -8,6 +8,7 @@ namespace ZombieRunner.Enemy
 
         internal void TakeDamage(float damage)
         {
+            BroadcastMessage("OnDamageTaken");
             _hitPoints -= damage;
 
             if(_hitPoints <= 0)

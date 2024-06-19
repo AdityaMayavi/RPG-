@@ -9,6 +9,7 @@ namespace ZombieRunner.Enemy
         [Header("Targt Ref")]
         [SerializeField] private Transform _target;
         [SerializeField] private float _chaseRange = 5f;
+        [SerializeField] private float _turnSpeed = 10f;
 
         [Header("NavMesh Agent")]
         private NavMeshAgent _navMeshAgent;
@@ -41,6 +42,7 @@ namespace ZombieRunner.Enemy
 
         private void EngageTarget()
         {
+            FaceTarget();
             if(_distanceToTarget >= _navMeshAgent.stoppingDistance)
             {
                 Chasetarget();
@@ -69,6 +71,18 @@ namespace ZombieRunner.Enemy
         {
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position, _chaseRange);
+        }
+
+        private void FaceTarget()
+        {
+            Vector3 direction = (_target.position - transform.position).normalized;
+            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z)); 
+            transform.rotation =Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * _turnSpeed);
+        }
+
+        public void OnDamageTaken()
+        {
+            _isProvoked = true;
         }
     }
 }
