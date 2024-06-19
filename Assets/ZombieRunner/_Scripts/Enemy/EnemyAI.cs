@@ -16,9 +16,12 @@ namespace ZombieRunner.Enemy
 
         private bool _isProvoked = false;
 
+        private Animator _enemyAnimator;
+
         private void Start()
         {
             _navMeshAgent = GetComponent<NavMeshAgent>();
+            _enemyAnimator = GetComponent<Animator>();
         }
 
         private void Update()
@@ -51,11 +54,14 @@ namespace ZombieRunner.Enemy
 
         private void Chasetarget()
         {
+            _enemyAnimator.SetBool("Attack", false);
+            _enemyAnimator.SetTrigger("Move");  
             _navMeshAgent.SetDestination(_target.position);
         }
 
         private void AttackTarget()
         {
+            _enemyAnimator.SetBool("Attack", true);
             Debug.Log(name + "Seeked and Destroyed" + _target.name);
         }
 
