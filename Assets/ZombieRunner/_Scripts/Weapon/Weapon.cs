@@ -1,15 +1,23 @@
+using System.Collections;
 using UnityEngine;
+using zombieRunner.Player;
 using ZombieRunner.Enemy;
 
 public class Weapon : MonoBehaviour
 {
     [SerializeField] private Camera _fpCamera;
-    [SerializeField] private float _range = 100f;
+    [SerializeField] private float _weaponRange = 100f;
     [SerializeField] private float _damage = 30f;
 
     [SerializeField] private ParticleSystem _muzzleFlash;
     [SerializeField] private GameObject _hiteffect;
-    
+    [SerializeField] private float _timeBetweenShots = 0.5f;
+
+    [SerializeField] private Ammo _ammoSlot;
+
+    private bool _canShoot = true;
+
+
     void Start()
     {
         
@@ -22,22 +30,29 @@ public class Weapon : MonoBehaviour
 
     private void WeaponShoot()
     {
-        if(Input.GetKeyDown(KeyCode.Z))
+        if( Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Z) && _canShoot == true)
         {
-            Shoot();
+            StartCoroutine(ShootRoutine());
         }
     }
 
-    private void Shoot()
+    IEnumerator ShootRoutine()
     {
-        PlayMuzzleFlash();
-        ProcessRayCast();
+        _canShoot = false;
+        if (_ammoSlot.GetCurrentAmmo() > 0)
+        {
+            PlayMuzzleFlash();
+            _ammoSlot.ReduceCurrentAmmo();
+            ProcessRayCast();
+        }
+        yield return new WaitForSeconds(_timeBetweenShots);
+        _canShoot = true;
     }
 
     private void ProcessRayCast()
     {
         RaycastHit hit;
-        if (Physics.Raycast(_fpCamera.transform.position, _fpCamera.transform.forward, out hit, _range))
+        if (Physics.Raycast(_fpCamera.transform.position, _fpCamera.transform.forward, out hit, _weaponRange))
         {
             Debug.Log("Hitted a Object: " + hit.transform.name);
             CreateHitImpact(hit);
@@ -66,5 +81,10 @@ public class Weapon : MonoBehaviour
     {
         GameObject impact = Instantiate(_hiteffect, hit.point, Quaternion.LookRotation(hit.normal));
         Destroy(impact, 0.1f);
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, _weaponRange);
     }
 }
