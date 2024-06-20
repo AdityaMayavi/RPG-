@@ -12,6 +12,7 @@ namespace ZombieRunner.Enemy
 
         private void Start()
         {
+
         }
         public void OnDamageTaken()
         {

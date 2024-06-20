@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using zombieRunner.Player;
 using ZombieRunner.Enemy;
+using ZombieRunner.Player;
 
 public class Weapon : MonoBehaviour
 {
@@ -14,9 +15,14 @@ public class Weapon : MonoBehaviour
     [SerializeField] private float _timeBetweenShots = 0.5f;
 
     [SerializeField] private Ammo _ammoSlot;
+    [SerializeField] private AmmoType _ammoType;
 
     private bool _canShoot = true;
 
+    private void OnEnable()
+    {
+        _canShoot = true;
+    }
 
     void Start()
     {
@@ -30,7 +36,7 @@ public class Weapon : MonoBehaviour
 
     private void WeaponShoot()
     {
-        if( Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Z) && _canShoot == true)
+        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Z) && _canShoot == true)
         {
             StartCoroutine(ShootRoutine());
         }
@@ -39,10 +45,10 @@ public class Weapon : MonoBehaviour
     IEnumerator ShootRoutine()
     {
         _canShoot = false;
-        if (_ammoSlot.GetCurrentAmmo() > 0)
+        if (_ammoSlot.GetCurrentAmmo(_ammoType) > 0)
         {
             PlayMuzzleFlash();
-            _ammoSlot.ReduceCurrentAmmo();
+            _ammoSlot.ReduceCurrentAmmo(_ammoType);
             ProcessRayCast();
         }
         yield return new WaitForSeconds(_timeBetweenShots);

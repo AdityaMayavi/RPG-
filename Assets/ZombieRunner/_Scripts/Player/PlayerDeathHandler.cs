@@ -1,4 +1,5 @@
 using UnityEngine;
+using ZombieRunner.Player;
 
 namespace zombieRunner.Player
 {
@@ -14,6 +15,7 @@ namespace zombieRunner.Player
         {
             _gameOverCanvas.enabled = true;
             Time.timeScale = 0;
+            FindObjectOfType<WeaponSwitcher>().enabled = false;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }

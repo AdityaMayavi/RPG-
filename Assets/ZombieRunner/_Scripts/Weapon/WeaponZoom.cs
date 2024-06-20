@@ -20,25 +20,37 @@ namespace zombieRunner.Player
             FPSCameraZoom();
         }
 
+        private void OnDisable()
+        {
+            ZoomOut();
+        }
+
         private void FPSCameraZoom()
         {
             if (Input.GetMouseButtonDown(1))
             {
-                Debug.Log("Taking input");
                 if (_zoomedInToggle == false)
                 {
-                    _zoomedInToggle = true;
-                    _fpsCamera.m_Lens.FieldOfView = _zoomInFOV;
-                    Debug.Log("Camera Zoomed in");
+                    ZoomIn();
                 }
                 else
                 {
-                    _zoomedInToggle = false;
-                    _fpsCamera.m_Lens.FieldOfView = _zoomOutFOV;
-                    Debug.Log("Camera Zoomed out");
+                    ZoomOut();
 
                 }
             }
+        }
+
+        private void ZoomOut()
+        {
+            _zoomedInToggle = false;
+            _fpsCamera.m_Lens.FieldOfView = _zoomOutFOV;
+        }
+
+        private void ZoomIn()
+        {
+            _zoomedInToggle = true;
+            _fpsCamera.m_Lens.FieldOfView = _zoomInFOV;
         }
     }
 }      

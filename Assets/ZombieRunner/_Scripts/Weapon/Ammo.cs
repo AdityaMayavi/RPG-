@@ -1,19 +1,45 @@
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
+using ZombieRunner.Player;
 
 namespace zombieRunner.Player
 {
     public class Ammo : MonoBehaviour
     {
-        [SerializeField] private int _ammoAmount = 10;
+        [SerializeField] Ammoslot[] ammoSlots;
 
-        internal int GetCurrentAmmo()
+        [System.Serializable]
+        private class Ammoslot
         {
-            return _ammoAmount;
+            public AmmoType ammoType;
+            public int ammoAmount;
         }
 
-        internal void ReduceCurrentAmmo()
+        internal int GetCurrentAmmo(AmmoType ammoType)
         {
-            _ammoAmount--;
+            return GetAmmoSlot(ammoType).ammoAmount;
+        }
+
+        internal void ReduceCurrentAmmo(AmmoType ammoType)
+        {
+            GetAmmoSlot(ammoType).ammoAmount--;
+        } 
+        internal void IncreaseCurrentAmmo(AmmoType ammoType, int ammountAmount)
+        {
+            GetAmmoSlot(ammoType).ammoAmount += ammountAmount;
+        }
+
+        private Ammoslot GetAmmoSlot(AmmoType ammoType)
+        {
+            foreach (Ammoslot slot in ammoSlots)
+            {
+                if(slot.ammoType == ammoType)
+                {
+                    return slot;
+                }
+            }
+            return null;
         }
     }
 }

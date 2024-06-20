@@ -4846,7 +4846,6 @@ GameObject:
   - component: {fileID: 1813962639157794274}
   - component: {fileID: 8570403344669885027}
   - component: {fileID: 7413975765784090902}
-  - component: {fileID: 8505073387740906001}
   m_Layer: 8
   m_Name: ShotGun
   m_TagString: Untagged
@@ -4901,7 +4900,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7ef7bd3e81731ea42b89ed4aaee53658, type: 2}
+  - {fileID: 2100000, guid: 4d30329cf4d84e94a89013e7db42a98e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4959,22 +4958,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fpCamera: {fileID: 0}
-  _range: 100
-  _damage: 30
+  _weaponRange: 5
+  _damage: 50
   _muzzleFlash: {fileID: 4556989630409855200}
   _hiteffect: {fileID: 3241617820527024328, guid: 98d89d2cb29d5a446a6c87e63da119a3, type: 3}
-  _timeBetweenShots: 0
-  _ammoSlot: {fileID: 8505073387740906001}
---- !u!114 &8505073387740906001
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4633771648465198850}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38badb3f2a430a04e967f9b0a81194d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _ammoAmount: 30
+  _timeBetweenShots: 0.5
+  _ammoSlot: {fileID: 0}
+  _ammoType: 1

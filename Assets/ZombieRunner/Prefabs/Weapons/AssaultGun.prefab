@@ -4847,7 +4847,6 @@ GameObject:
   - component: {fileID: 2404017248073567939}
   - component: {fileID: 3333489412683598437}
   - component: {fileID: 6220689309352013736}
-  - component: {fileID: 7238207798859379309}
   m_Layer: 8
   m_Name: AssaultGun
   m_TagString: Untagged
@@ -4960,12 +4959,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fpCamera: {fileID: 0}
-  _range: 100
+  _weaponRange: 15
   _damage: 30
   _muzzleFlash: {fileID: 1645906517823094083}
   _hiteffect: {fileID: 3241617820527024328, guid: 98d89d2cb29d5a446a6c87e63da119a3, type: 3}
-  _timeBetweenShots: 0
-  _ammoSlot: {fileID: 7238207798859379309}
+  _timeBetweenShots: 0.2
+  _ammoSlot: {fileID: 0}
+  _ammoType: 2
 --- !u!114 &6220689309352013736
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4983,16 +4983,3 @@ MonoBehaviour:
   _zoomInFOV: 20
   _zoomOutSensitivty: 2
   _zoomInSensitivty: 0.5
---- !u!114 &7238207798859379309
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5273674888843342640}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38badb3f2a430a04e967f9b0a81194d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _ammoAmount: 30
