@@ -1,18 +1,11 @@
 using UnityEngine;
 
-namespace RPG.Player
+namespace RPG.General.CameraFollow
 {
-    public class PlayerCameraFollow : MonoBehaviour
+    public class CameraFollow : MonoBehaviour
     {
         [SerializeField] private Transform _target;
 
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
-        {
-
-        }
-
-        // Update is called once per frame
         void  LateUpdate()
         {
             FollowPlayer(); 

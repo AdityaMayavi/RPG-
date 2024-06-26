@@ -1,43 +1,46 @@
+
+using RPG.Core;
 using System;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace RPG.Player
+namespace RPG.Movement
 {
-    public class PlayerMover : MonoBehaviour
+    public class Mover : MonoBehaviour, IAction
     {
-        [SerializeField] private Transform _target;
-        [SerializeField] private float _chaseSpeed = 50f;
-
         private NavMeshAgent _navMeshAgent;
         private Animator _animator;
         private Ray _lastRay;
+
+        private ActionScheduler _actionScheduler;
 
         private void Start()
         {
             _navMeshAgent = GetComponent<NavMeshAgent>();
             _animator = GetComponent<Animator>();
+            _actionScheduler = GetComponent<ActionScheduler>();
         }
 
         private void Update()
         {
-            MoveToCursor();
             UpdateAnimator();
         }
 
-        private void MoveToCursor()
+        internal void StartMoveAction(Vector3 destination)
         {
-            if (Input.GetMouseButton(0))
-            {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
-                bool hasHit = Physics.Raycast(ray, out hit);
+            _actionScheduler.StartAction(this);
+            MoveTo(destination);
+        }
 
-                if (hasHit)
-                {
-                    _navMeshAgent.destination = hit.point * _chaseSpeed * Time.deltaTime;
-                }
-            }
+        internal void MoveTo(Vector3 destination)
+        {
+            _navMeshAgent.destination = destination; 
+            _navMeshAgent.isStopped = false;
+        }
+
+        public void Cancel()
+        {
+            _navMeshAgent.isStopped = true;
         }
 
         private void UpdateAnimator()
@@ -46,6 +49,6 @@ namespace RPG.Player
             Vector3 localVelocity = transform.InverseTransformDirection(velociy);
             float speed = localVelocity.z;
             _animator.SetFloat("ForwardSpeed", speed);
-        }
+        }  
     }
 }
