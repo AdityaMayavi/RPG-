@@ -16,11 +16,15 @@ namespace RPG.Combat
         private Mover _mover;
         private ActionScheduler _actionScheduler;
 
+        private Animator _animator;
+
         private void Start()
         {
             _mover = GetComponent<Mover>();
             _actionScheduler = GetComponent<ActionScheduler>();
-            _target = GetComponent<Health>();   
+            _target = GetComponent<Health>();
+            Debug.Log(gameObject + _target.name);
+            _animator = GetComponent<Animator>();
         }
 
         private void Update()
@@ -37,7 +41,7 @@ namespace RPG.Combat
                 return;
             }
 
-            if(_target.IsDead())
+            if (_target.IsDead())
             {
                 return;
             }
@@ -49,7 +53,7 @@ namespace RPG.Combat
             else
             {
                 _mover.Cancel();
-                AttackBehaviour();
+                //AttackBehaviour();
             }
         }
 
@@ -59,14 +63,24 @@ namespace RPG.Combat
             if (_timeSinceLastAttack > _timeBetweenAttacks)
             {
                 //this will trigger the Hit() event
-                GetComponent<Animator>().SetTrigger("attack");
+                TriggerAttack();
                 _timeSinceLastAttack = 0;
             }
+        }
+
+        private void TriggerAttack()
+        {
+            _animator.SetTrigger("stopAttack");
+            _animator.SetTrigger("attack");
         }
 
         //Animation Event
         public void Hit()
         {
+            if (_target == null)
+            {
+                return;
+            }
             _target.TakeDamage(_weaponDamage);
         }
 
@@ -75,17 +89,17 @@ namespace RPG.Combat
             return Vector3.Distance(transform.position, _target.transform.position) < _weaponRange;
         }
 
-        public bool CanAttack(CombatTarget combatTarget)
+        public bool CanAttack(GameObject combatTarget)
         {
             if (combatTarget == null)
             {
-               return false;
+                return false;
             }
             Health targetToTest = combatTarget.GetComponent<Health>();
-            return targetToTest !=  null &&  !targetToTest.IsDead();
+            return targetToTest != null && !targetToTest.IsDead();
         }
 
-        internal void Attack(CombatTarget combatTarget)
+        internal void Attack(GameObject combatTarget)
         {
             _actionScheduler.StartAction(this);
             _target = combatTarget.GetComponent<Health>();
@@ -94,8 +108,14 @@ namespace RPG.Combat
 
         public void Cancel()
         {
-            GetComponent<Animator>().SetTrigger("stopAttack");
+            StopAttack();
             _target = null;
-        }    
+        }
+
+        private void StopAttack()
+        {
+            _animator.SetTrigger("attack");
+            _animator.SetTrigger("stopAttack");
+        }
     }
 }

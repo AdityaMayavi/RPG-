@@ -1,25 +1,33 @@
 using RPG.Combat;
+using RPG.Core;
 using RPG.Movement;
 using UnityEngine;
 
-namespace RPG.Player.Control
+namespace RPG.Control
 {
     public class PlayerController : MonoBehaviour
     {
         private Mover _mover;
         private Fighter _fighter;
         private CombatTarget _combatTarget;
+        private Health _health;
 
         private void Start()
         {
             _mover = GetComponent<Mover>();
             _fighter = GetComponent<Fighter>();
             _combatTarget = GetComponent<CombatTarget>();
+            _health = GetComponent<Health>();
         }
 
         private void Update()
         {
-            if( InteractWithCombat())
+            if (_health.IsDead())
+            {
+                return;
+            }
+
+            if (InteractWithCombat())
             {
                 return;
             }
@@ -57,14 +65,19 @@ namespace RPG.Player.Control
                CombatTarget target = hit.transform.GetComponent<CombatTarget>();
                 //_combatTarget target = hit.transform;
 
-                if(!GetComponent<Fighter>().CanAttack(target))
+                if (target == null)
                 {
                     continue;
                 }
 
-                if(Input.GetMouseButtonDown(0))
+                if(!GetComponent<Fighter>().CanAttack(target.gameObject))
                 {
-                    _fighter.Attack(target);
+                    continue;
+                }
+
+                if(Input.GetMouseButton(0))
+                {
+                    _fighter.Attack(target.gameObject);
                 }
                 return true;
             }

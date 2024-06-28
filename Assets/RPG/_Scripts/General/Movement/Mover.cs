@@ -1,4 +1,3 @@
-
 using RPG.Core;
 using System;
 using UnityEngine;
@@ -13,16 +12,19 @@ namespace RPG.Movement
         private Ray _lastRay;
 
         private ActionScheduler _actionScheduler;
+        private Health _health;
 
         private void Start()
         {
             _navMeshAgent = GetComponent<NavMeshAgent>();
             _animator = GetComponent<Animator>();
             _actionScheduler = GetComponent<ActionScheduler>();
+            _health = GetComponent<Health>();
         }
 
         private void Update()
         {
+            _navMeshAgent.enabled = !_health.IsDead();
             UpdateAnimator();
         }
 
