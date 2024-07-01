@@ -10,6 +10,9 @@ namespace RPG.Control
     {
         [SerializeField] private float _chaseDistance = 5f;
         [SerializeField] private float _suspitionTime = 3f;
+
+        [Range(0,1)] [SerializeField] private float _patrolSpeedFraction = 0.2f;
+
         [SerializeField] private PatrolPath _patrolPath;
         [SerializeField] private float _wayPointTolerance = 1f;
         [SerializeField] private float _wayPointDwellTime = 3f;
@@ -78,7 +81,7 @@ namespace RPG.Control
             }
             if(_timeSinceArrivedAtWayPoint > _wayPointDwellTime)
             {
-                _mover.StartMoveAction(nextPosition);
+                _mover.StartMoveAction(nextPosition, _patrolSpeedFraction);
             }
         }
 
